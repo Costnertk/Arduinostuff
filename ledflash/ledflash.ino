@@ -3,15 +3,16 @@
 
  void setup()
  {
-    pinMode(ledpin, OUTPUT);
+   Serial.begin(9600);
+   pinMode(ledpin, OUTPUT);
  }
 
  void loop()
  {
-    digitalWrite(ledpin, HIGH);
-    Serial.print("ON");
-    delay(1000);
-    digitalWrite(ledpin, LOW);
-    Serial.print("OFF");
-    delay(1000);
+   digitalWrite(ledpin, HIGH);
+   Serial.println("ON");
+   delay(30);
+   digitalWrite(ledpin, LOW);
+   Serial.println("OFF");
+   delay(500);
  }
