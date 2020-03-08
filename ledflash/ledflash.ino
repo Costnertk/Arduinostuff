@@ -9,7 +9,9 @@
  void loop()
  {
     digitalWrite(ledpin, HIGH);
+    Serial.print("ON");
     delay(1000);
     digitalWrite(ledpin, LOW);
+    Serial.print("OFF");
     delay(1000);
  }
