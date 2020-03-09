@@ -15,6 +15,7 @@ void loop()
     if(digialRead(buttonpin) == HIGH)
     {
         digitalWrite(ledpin, HIGH);
+        Serial.print("button pushed");
     }
     else
     {
