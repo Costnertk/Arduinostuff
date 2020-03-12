@@ -56,8 +56,8 @@ void processAccelData(){
 
 void calcualteRP() //calculates roll and pitch
 {
-  accAngX = (atan(AccY / sqrt(pow(AccX, 2) + pow(AccY,2))) * 180 / PI) - 0.58;
-  accAngY = (atan(-1 * AccX / sqrt(pow(AccY, 2) + pow(AccZ,2))) * 180 / PI) + 1.58;
+  accAngX = (atan(accelY / sqrt(pow(accelX, 2) + pow(accelY,2))) * 180 / PI) - 0.58;
+  accAngY = (atan(-1 * accelX / sqrt(pow(accelY, 2) + pow(accelZ,2))) * 180 / PI) + 1.58;
 }
 
 void recordGyroRegisters() {
