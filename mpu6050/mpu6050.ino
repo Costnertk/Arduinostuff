@@ -5,6 +5,7 @@ float gForceX, gForceY, gForceZ;
 
 long gyroX, gyroY, gyroZ;
 float rotX, rotY, rotZ;
+float accAngX, accAngY;
 
 void setup() {
   Serial.begin(9600);
@@ -53,6 +54,12 @@ void processAccelData(){
   gForceZ = accelZ / 16384.0;
 }
 
+void calcualteRP() //calculates roll and pitch
+{
+  accAngX = (atan(AccY / sqrt(pow(AccX, 2) + pow(AccY,2))) * 180 / PI) - 0.58;
+  accAngY = (atan(-1 * AccX / sqrt(pow(AccY, 2) + pow(AccZ,2))) * 180 / PI) + 1.58;
+}
+
 void recordGyroRegisters() {
   Wire.beginTransmission(0b1101000); //I2C address of the MPU
   Wire.write(0x43); //Starting register for Gyro Readings
@@ -85,5 +92,9 @@ void printData() {
   Serial.print(" Y=");
   Serial.print(gForceY);
   Serial.print(" Z=");
-  Serial.println(gForceZ);
+  Serial.print(gForceZ);
+  Serial.print(" Roll = ");
+  Serial.print(accAngX);
+  Serial.print(" Pitch = ");
+  Serial.println(accAngY);
 }
