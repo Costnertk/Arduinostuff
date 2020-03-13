@@ -1,4 +1,5 @@
 #include <Wire.h>
+#include <Servo.h>
 
 long accelX, accelY, accelZ;
 float gForceX, gForceY, gForceZ;
@@ -11,9 +12,12 @@ float gyroDegX, gyroDegY, gyroDegZ;
 int minVal=265;
 int maxVal=402;
 
+Servo myservoZ;
+
 void setup() {
   Serial.begin(9600);
   Wire.begin();
+  myservoZ.attach(9);
   setupMPU();
 }
 
@@ -23,8 +27,9 @@ void loop()
   recordGyroRegisters();
   calcualteRP();
   calculateDeg();
+  actuateServos();
   printData();
-  delay(100);
+  //delay(100);
 }
 
 void setupMPU(){
@@ -108,4 +113,12 @@ void printData()
   Serial.print(gyroDegY);
   Serial.print(" Z Angle =");
   Serial.println(gyroDegZ);
+}
+
+void actuateServos()
+{
+  if(gyroDegZ <= 180 && gyroDegZ >= 0)
+  {
+    myservoZ.write(gyroDegZ);
+  }
 }
