@@ -96,7 +96,7 @@ void calculateDeg()
   gyroDegZ = RAD_TO_DEG * (atan2(-yAng, -xAng)+PI);
 }
 
-void printData();
+void printData()
 {
   Serial.print(" Roll = ");
   Serial.print(accAngX);
