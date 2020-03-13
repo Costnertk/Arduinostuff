@@ -13,11 +13,13 @@ int minVal=265;
 int maxVal=402;
 
 Servo myservoZ;
+Servo myservoY;
 
 void setup() {
   Serial.begin(9600);
   Wire.begin();
   myservoZ.attach(9);
+  myservoY.attach(8);
   setupMPU();
 }
 
@@ -119,6 +121,11 @@ void actuateServos()
 {
   if(gyroDegZ <= 180 && gyroDegZ >= 0)
   {
-    myservoZ.write(gyroDegZ);
+    myservoZ.write((int)gyroDegZ);
+  }
+  
+  if(gyroDegY <= 180 && gyroDegY >= 0)
+  {
+    myservoY.write((int)gyroDegY);
   }
 }
