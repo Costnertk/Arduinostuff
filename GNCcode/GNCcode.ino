@@ -102,10 +102,10 @@ void printData()
   Serial.print(accAngX);
   Serial.print(" Pitch = ");
   Serial.print(accAngY);
-  Serial.print("X Angle =");
+  Serial.print(" X Angle =");
   Serial.print(gyroDegX);
-  Serial.print("Y Angle =");
+  Serial.print(" Y Angle =");
   Serial.print(gyroDegY);
-  Serial.print("Z Angle =");
-  Serial.print(gyroDegX);
+  Serial.print(" Z Angle =");
+  Serial.println(gyroDegZ);
 }
