@@ -119,12 +119,12 @@ void printData()
 
 void actuateServos()
 {
-  if(gyroDegZ <= 180 && gyroDegZ >= 0)
+  if(gyroDegZ <= 120 && gyroDegZ >= 0)
   {
     myservoZ.write((int)gyroDegZ);
   }
   
-  if(gyroDegY <= 180 && gyroDegY >= 0)
+  if(gyroDegY <= 120 && gyroDegY >= 0)
   {
     myservoY.write((int)gyroDegY);
   }
