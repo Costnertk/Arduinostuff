@@ -1,6 +1,10 @@
 #include <Wire.h>
 #include <Servo.h>
 
+int ledRed = 4;
+int ledGreen = 5;
+int ledBlue = 6;
+
 long accelX, accelY, accelZ;
 float gForceX, gForceY, gForceZ;
 
@@ -20,15 +24,21 @@ void setup() {
   Serial.begin(9600);
   Wire.begin();
   myservoZ.attach(9);
+  myservoY.attach(8);
+  pinMode(ledRed, OUTPUT);
+  pinMode(ledGreen, OUTPUT);
+  pinMode(ledBlue, OUTPUT);
   setupMPU();
   startup();
 }
 
 void loop() {
-  //standby();
+  standby();
 }
 
 void startup() {
+  digitalWrite(ledRed, HIGH);
+  
   for (int i = 0; i < 10; i++) {
     recordGyroRegisters();
     calculateDeg();
@@ -43,10 +53,16 @@ void startup() {
   gyroZeroZ /= 10;
 
   ServoTest();
+  digitalWrite(ledRed, LOW);
 }
 
 void standby(){
-
+  digitalWrite(ledGreen, HIGH);
+  delay(50);
+  digitalWrite(ledGreen, LOW);
+  digitalWrite(ledBlue, HIGH);
+  delay(1000);
+  digitalWrite(ledBlue, LOW);
 }
 
 void setupMPU(){
@@ -111,18 +127,18 @@ void calculateDeg() {
 
 void ServoTest(){
   myservoZ.write(180);
-  delay(500);
+  delay(200);
   myservoZ.write(90);
-  delay(500);
+  delay(200);
   myservoZ.write(0);
-  delay(500);
+  delay(200);
   myservoZ.write(90);
-  delay(500);
+  delay(200);
   myservoY.write(180);
-  delay(500);
+  delay(200);
   myservoY.write(90);
-  delay(500);
+  delay(200);
   myservoY.write(0);
-  delay(500);
+  delay(200);
   myservoY.write(90);
 }
