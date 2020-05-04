@@ -1,6 +1,10 @@
 #include <Wire.h>
 #include <Servo.h>
 
+int ledRed = 4;
+int ledGreen = 5;
+int ledBlue = 6;
+
 long accelX, accelY, accelZ;
 float gForceX, gForceY, gForceZ;
 
@@ -8,6 +12,7 @@ long gyroX, gyroY, gyroZ;
 float rotX, rotY, rotZ;
 float accAngX, accAngY;
 float gyroDegX, gyroDegY, gyroDegZ;
+float gyroZeroX, gyroZeroY, gyroZeroZ;
 
 int minVal=265;
 int maxVal=402;
@@ -25,16 +30,16 @@ void setup() {
   pinMode(ledBlue, OUTPUT);
   setupMPU();
   startup();
+  liftOffDetect();
 }
 
 void loop()
 {
-  startup();
-  liftOffDetect();
   GNC();
 }
 
-void startup() {
+void startup() 
+{
   digitalWrite(ledRed, HIGH);
   
   for (int i = 0; i < 10; i++) {
@@ -153,13 +158,15 @@ void actuateServos()
 void liftOffDetect()
 {
   recordAccelRegisters();
-  while(accelY < 1)
+  while(accelY < 15000)
   {
     digitalWrite(ledGreen, LOW);
     digitalWrite(ledBlue, HIGH);
-    delay(500);
+    delay(200);
     digitalWrite(ledBlue, LOW);
     digitalWrite(ledGreen, HIGH);
+    delay(50);
+    recordAccelRegisters();
   }
 }
 
@@ -172,4 +179,22 @@ void GNC()
   actuateServos();
   printData();
   //delay(100);
+}
+
+void ServoTest(){
+  myservoZ.write(180);
+  delay(200);
+  myservoZ.write(90);
+  delay(200);
+  myservoZ.write(0);
+  delay(200);
+  myservoZ.write(90);
+  delay(200);
+  myservoY.write(180);
+  delay(200);
+  myservoY.write(90);
+  delay(200);
+  myservoY.write(0);
+  delay(200);
+  myservoY.write(90);
 }
