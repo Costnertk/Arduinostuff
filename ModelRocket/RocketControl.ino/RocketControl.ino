@@ -1,4 +1,5 @@
 #include <Wire.h>
+#include <Servo.h>
 
 long accelX, accelY, accelZ;
 float gForceX, gForceY, gForceZ;
@@ -6,20 +7,51 @@ float gForceX, gForceY, gForceZ;
 long gyroX, gyroY, gyroZ;
 float rotX, rotY, rotZ;
 float accAngX, accAngY;
+float gyroDegX, gyroDegY, gyroDegZ;
+
+int minVal=265;
+int maxVal=402;
+
+Servo myservoZ;
+Servo myservoY;
 
 void setup() {
   Serial.begin(9600);
   Wire.begin();
+  myservoZ.attach(9);
+  myservoY.attach(8);
+  pinMode(ledRed, OUTPUT);
+  pinMode(ledGreen, OUTPUT);
+  pinMode(ledBlue, OUTPUT);
   setupMPU();
+  startup();
 }
 
+void loop()
+{
+  startup();
+  liftOffDetect();
+  GNC();
+}
 
-void loop() {
-  recordAccelRegisters();
-  recordGyroRegisters();
-  calcualteRP();
-  printData();
-  delay(100);
+void startup() {
+  digitalWrite(ledRed, HIGH);
+  
+  for (int i = 0; i < 10; i++) {
+    recordGyroRegisters();
+    calculateDeg();
+    gyroZeroX += gyroDegX;
+    gyroZeroY += gyroDegY;
+    gyroZeroZ += gyroDegZ;
+    delay(500);
+  }
+
+  gyroZeroX /= 10;
+  gyroZeroY /= 10;
+  gyroZeroZ /= 10;
+
+  ServoTest();
+  digitalWrite(ledRed, LOW);
 }
 
 void setupMPU(){
@@ -55,12 +87,6 @@ void processAccelData(){
   gForceZ = accelZ / 16384.0;
 }
 
-void calcualteRP() //calculates roll and pitch
-{
-  accAngX = (atan(accelY / sqrt(pow(accelX, 2) + pow(accelY,2))) * 180 / PI) - 0.58;
-  accAngY = (atan(-1 * accelX / sqrt(pow(accelY, 2) + pow(accelZ,2))) * 180 / PI) + 1.58;
-}
-
 void recordGyroRegisters() {
   Wire.beginTransmission(0b1101000); //I2C address of the MPU
   Wire.write(0x43); //Starting register for Gyro Readings
@@ -79,24 +105,71 @@ void processGyroData() {
   rotZ = gyroZ / 131.0;
 }
 
-void printData() {
-  /*Serial.print("Gyro (deg)");
-  Serial.print(" X=");
-  Serial.print(rotX);
-  Serial.print(" Y=");
-  Serial.print(rotY);
-  Serial.print(" Z=");
-  Serial.print(rotZ);
-  */Serial.print(" Accel (g)");
-  Serial.print(" X=");
-  Serial.print(gForceX);
-  Serial.print(" Y=");
-  Serial.print(gForceY);
-  Serial.print(" Z=");
-  Serial.println(gForceZ);
-  /*Serial.print(" Roll = ");
+void calcualteRP() //calculates roll and pitch
+{
+  accAngX = (atan(accelY / sqrt(pow(accelX, 2) + pow(accelY,2))) * 180 / PI) - 0.58;
+  accAngY = (atan(-1 * accelX / sqrt(pow(accelY, 2) + pow(accelZ,2))) * 180 / PI) + 1.58;
+}
+
+void calculateDeg()
+{
+  int xAng = map(accelX,minVal,maxVal,-90,90);
+  int yAng = map(accelY,minVal,maxVal,-90,90);
+  int zAng = map(accelZ,minVal,maxVal,-90,90);
+  
+  
+  gyroDegX = RAD_TO_DEG * (atan2(-yAng, -zAng)+PI);
+  gyroDegY = RAD_TO_DEG * (atan2(-xAng, -zAng)+PI);
+  gyroDegZ = RAD_TO_DEG * (atan2(-yAng, -xAng)+PI);
+}
+
+void printData()
+{
+  Serial.print(" Roll = ");
   Serial.print(accAngX);
   Serial.print(" Pitch = ");
-  Serial.println(accAngY);
-  */
+  Serial.print(accAngY);
+  Serial.print(" X Angle =");
+  Serial.print(gyroDegX);
+  Serial.print(" Y Angle =");
+  Serial.print(gyroDegY);
+  Serial.print(" Z Angle =");
+  Serial.println(gyroDegZ);
+}
+
+void actuateServos()
+{
+  if(gyroDegZ <= 120 && gyroDegZ >= 0)
+  {
+    myservoZ.write((int)gyroDegZ);
+  }
+  
+  if(gyroDegY <= 120 && gyroDegY >= 0)
+  {
+    myservoY.write((int)gyroDegY);
+  }
+}
+
+void liftOffDetect()
+{
+  recordAccelRegisters();
+  while(accelY < 1)
+  {
+    digitalWrite(ledGreen, LOW);
+    digitalWrite(ledBlue, HIGH);
+    delay(500);
+    digitalWrite(ledBlue, LOW);
+    digitalWrite(ledGreen, HIGH);
+  }
+}
+
+void GNC()
+{
+  recordAccelRegisters();
+  recordGyroRegisters();
+  calcualteRP();
+  calculateDeg();
+  actuateServos();
+  printData();
+  //delay(100);
 }

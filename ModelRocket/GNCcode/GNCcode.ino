@@ -129,3 +129,16 @@ void actuateServos()
     myservoY.write((int)gyroDegY);
   }
 }
+
+void liftOffDetect()
+{
+  recordAccelRegisters();
+  while(accelY < 1)
+  {
+    digitalWrite(ledGreen, LOW);
+    digitalWrite(ledBlue, HIGH);
+    delay(500);
+    digitalWrite(ledBlue, LOW);
+    digitalWrite(ledGreen, HIGH);
+  }
+}
