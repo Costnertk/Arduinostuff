@@ -2,7 +2,9 @@
 
 Servo myservoZ;
 Servo myservoY;
+
 int wait = 100;
+
 void setup(){
     Serial.begin(9600);
     myservoZ.attach(9);
@@ -10,9 +12,22 @@ void setup(){
 }
 
 void loop(){
-    ServoTest();
+    //ServoTest();
+    CircleServo();
 }
 
+void CircleServo(){
+  for(int i = 65; i <= 115; i++){
+    myservoZ.write(i);
+    myservoY.write(180-i);
+    delay(20);
+  }
+  for(int i = 115; i >= 65; i--){
+    myservoZ.write(i);
+    myservoY.write(180-i);
+    delay(20);
+  }
+}
 void ServoTest(){
   myservoZ.write(115);
   delay(wait);
