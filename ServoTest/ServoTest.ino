@@ -17,16 +17,21 @@ void loop(){
 }
 
 void CircleServo(){
-  for(int i = 65; i <= 115; i++){
+  for(int i = 65; i <= 90; i++){
     myservoZ.write(i);
-    myservoY.write(180-i);
+    myservoY.write(i+25);
     delay(20);
   }
-  for(int i = 115; i >= 65; i--){
+  for(int i = 90; i <= 115; i++){
     myservoZ.write(i);
-    myservoY.write(180-i);
+    myservoY.write(140-i);
     delay(20);
   }
+  //for(int i = 115; i >= 65; i--){
+    //myservoZ.write(i);
+    //myservoY.write(180-i);
+    //delay(20);
+  //}
 }
 void ServoTest(){
   myservoZ.write(115);
