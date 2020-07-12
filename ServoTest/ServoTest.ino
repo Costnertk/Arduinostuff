@@ -28,6 +28,7 @@ void SquareServo(){
   myservoZ.write(65);
   delay(200);
 }
+
 void CircleServo(){
   for(int i = 65; i <= 90; i++){
     myservoZ.write(i);
@@ -53,12 +54,8 @@ void CircleServo(){
     delay(wait);
   }
   
-  //for(int i = 115; i >= 65; i--){
-    //myservoZ.write(i);
-    //myservoY.write(180-i);
-    //delay(20);
-  //}
 }
+
 void ServoTest(){
   myservoZ.write(115);
   delay(wait);

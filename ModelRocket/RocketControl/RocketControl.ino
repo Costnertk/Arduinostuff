@@ -33,13 +33,11 @@ void setup() {
   liftOffDetect();
 }
 
-void loop()
-{
+void loop(){
   GNC();
 }
 
-void startup() 
-{
+void startup(){
   digitalWrite(ledRed, HIGH);
   
   for (int i = 0; i < 10; i++) {
@@ -56,6 +54,8 @@ void startup()
   gyroZeroZ /= 10;
 
   ServoTest();
+  SquareServoTest();
+  CircleServoTest();
   digitalWrite(ledRed, LOW);
 }
 
@@ -74,7 +74,7 @@ void setupMPU(){
   Wire.endTransmission(); 
 }
 
-void recordAccelRegisters() {
+void recordAccelRegisters(){
   Wire.beginTransmission(0b1101000); //I2C address of the MPU
   Wire.write(0x3B); //Starting register for Accel Readings
   Wire.endTransmission();
@@ -92,7 +92,7 @@ void processAccelData(){
   gForceZ = accelZ / 16384.0;
 }
 
-void recordGyroRegisters() {
+void recordGyroRegisters(){
   Wire.beginTransmission(0b1101000); //I2C address of the MPU
   Wire.write(0x43); //Starting register for Gyro Readings
   Wire.endTransmission();
@@ -104,20 +104,18 @@ void recordGyroRegisters() {
   processGyroData();
 }
 
-void processGyroData() {
+void processGyroData(){
   rotX = gyroX / 131.0;
   rotY = gyroY / 131.0; 
   rotZ = gyroZ / 131.0;
 }
 
-void calcualteRP() //calculates roll and pitch
-{
+void calcualteRP() //calculates roll and pitch{
   accAngX = (atan(accelY / sqrt(pow(accelX, 2) + pow(accelY,2))) * 180 / PI) - 0.58;
   accAngY = (atan(-1 * accelX / sqrt(pow(accelY, 2) + pow(accelZ,2))) * 180 / PI) + 1.58;
 }
 
-void calculateDeg()
-{
+void calculateDeg(){
   int xAng = map(accelX,minVal,maxVal,-90,90);
   int yAng = map(accelY,minVal,maxVal,-90,90);
   int zAng = map(accelZ,minVal,maxVal,-90,90);
@@ -128,8 +126,7 @@ void calculateDeg()
   gyroDegZ = RAD_TO_DEG * (atan2(-yAng, -xAng)+PI);
 }
 
-void printData()
-{
+void printData(){
   Serial.print(" Roll = ");
   Serial.print(accAngX);
   Serial.print(" Pitch = ");
@@ -142,8 +139,7 @@ void printData()
   Serial.println(gyroDegZ);
 }
 
-void actuateServos()
-{
+void actuateServos(){
   if(gyroDegZ <= 120 && gyroDegZ >= 0)
   {
     myservoZ.write((int)gyroDegZ);
@@ -155,8 +151,7 @@ void actuateServos()
   }
 }
 
-void liftOffDetect()
-{
+void liftOffDetect(){
   recordAccelRegisters();
   while(accelY < 15000)
   {
@@ -170,8 +165,7 @@ void liftOffDetect()
   }
 }
 
-void GNC()
-{
+void GNC(){
   recordAccelRegisters();
   recordGyroRegisters();
   calcualteRP();
@@ -197,4 +191,42 @@ void ServoTest(){
   myservoY.write(0);
   delay(200);
   myservoY.write(90);
+}
+
+void SquareServoTest(){
+  myservoZ.write(65);
+  myservoY.write(65);
+  delay(200);
+  myservoZ.write(115);
+  delay(200);
+  myservoY.write(115);
+  delay(200);
+  myservoZ.write(65);
+  delay(200);
+}
+
+void CircleServoTest(){
+  for(int i = 65; i <= 90; i++){
+    myservoZ.write(i);
+    myservoY.write(i+25);
+    delay(wait);
+  }
+  
+  for(int i = 90; i <= 115; i++){
+    myservoZ.write(i);
+    myservoY.write(abs(i-205));
+    delay(wait);
+  }
+
+  for(int i = 115; i >= 90; i--){
+    myservoZ.write(i);
+    myservoY.write(i-25);
+    delay(wait);
+  }
+
+  for(int i = 90; i >= 65; i--){
+    myservoZ.write(i);
+    myservoY.write(abs(i-155));
+    delay(wait);
+  }
 }
