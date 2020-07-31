@@ -19,7 +19,11 @@ void loop() {
   recordGyroRegisters();
   calcualteRP();
   printData();
-  delay(100);
+  //delay(50);
+  Serial.write(27);       // ESC command
+  Serial.print("[2J");    // clear screen command
+  Serial.write(27);
+  Serial.print("[H");     // cursor to home command
 }
 
 void setupMPU(){
@@ -80,23 +84,23 @@ void processGyroData() {
 }
 
 void printData() {
-  Serial.println("Gyro (deg)");
+  Serial.print("Gyro (deg)");
   Serial.print(" X=");
   Serial.print(rotX);
   Serial.print(" Y=");
   Serial.print(rotY);
   Serial.print(" Z=");
   Serial.print(rotZ);
-  Serial.println(" Accel (g)");
+  Serial.print(" Accel (g)");
   Serial.print(" X=");
   Serial.print(gForceX);
   Serial.print(" Y=");
   Serial.print(gForceY);
   Serial.print(" Z=");
-  Serial.println(gForceZ);
+  Serial.print(gForceZ);
   Serial.print(" Roll = ");
   Serial.print(accAngX);
   Serial.print(" Pitch = ");
-  Serial.println(accAngY);
+  Serial.print(accAngY);
   
 }
