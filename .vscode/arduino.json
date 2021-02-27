@@ -1,6 +1,6 @@
 {
     "board": "arduino:avr:nano",
     "configuration": "cpu=atmega328",
-    "sketch": "ModelRocket\\StartupStandby\\StartupStandby.ino",
+    "sketch": "SystemTimeLedTest\\SystemTimeLedTest.ino",
     "port": "COM7"
 }
