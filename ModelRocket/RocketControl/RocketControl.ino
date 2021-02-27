@@ -5,6 +5,8 @@ int ledRed = 4;
 int ledGreen = 5;
 int ledBlue = 6;
 
+int wait = 5;
+
 long accelX, accelY, accelZ;
 float gForceX, gForceY, gForceZ;
 
@@ -30,7 +32,7 @@ void setup() {
   pinMode(ledBlue, OUTPUT);
   setupMPU();
   startup();
-  liftOffDetect();
+  launchDetect();
 }
 
 void loop(){
@@ -110,7 +112,7 @@ void processGyroData(){
   rotZ = gyroZ / 131.0;
 }
 
-void calcualteRP() //calculates roll and pitch{
+void calcualteRP(){  //calculates roll and pitch
   accAngX = (atan(accelY / sqrt(pow(accelX, 2) + pow(accelY,2))) * 180 / PI) - 0.58;
   accAngY = (atan(-1 * accelX / sqrt(pow(accelY, 2) + pow(accelZ,2))) * 180 / PI) + 1.58;
 }
@@ -151,10 +153,9 @@ void actuateServos(){
   }
 }
 
-void liftOffDetect(){
+void launchDetect(){
   recordAccelRegisters();
-  while(accelY < 15000)
-  {
+  while(accelY < 15000){
     digitalWrite(ledGreen, LOW);
     digitalWrite(ledBlue, HIGH);
     delay(200);
@@ -163,6 +164,7 @@ void liftOffDetect(){
     delay(50);
     recordAccelRegisters();
   }
+  printData();
 }
 
 void GNC(){
