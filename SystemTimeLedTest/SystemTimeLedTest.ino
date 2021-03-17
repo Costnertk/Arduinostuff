@@ -9,16 +9,18 @@ void setup(){
 }
 
 void loop(){
+    int currentSysTime = millis();
     ledFlash();
 }
 
 void ledFlash(){
-    if((millis()%50)==0){
+    if((currentSysTime%2000)==0){
+        int ledOffSysTime = millis() + 500;
         digitalWrite(blue, LOW);
         digitalWrite(green, HIGH);
     }
-    if((millis()%60)==0){
+    if(currentSysTime==ledOffSysTime){
         digitalWrite(green, LOW);
-        digitalWrite(blue, HIGH);
+        digitalWrite(blue,HIGH);
     }
 }
