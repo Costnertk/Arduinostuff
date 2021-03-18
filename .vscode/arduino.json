@@ -2,5 +2,5 @@
     "board": "arduino:avr:nano",
     "configuration": "cpu=atmega328",
     "sketch": "SystemTimeLedTest\\SystemTimeLedTest.ino",
-    "port": "COM7"
+    "port": "COM5"
 }

@@ -4,12 +4,15 @@ int red = 4;
 int blue = 5;
 int green = 6;
 
+int currentSysTime;
+int ledOffSysTime;
+
 void setup(){
     Serial.begin(9600);
 }
 
 void loop(){
-    int currentSysTime = millis();
+    currentSysTime = millis();
     ledFlash();
 }
 
