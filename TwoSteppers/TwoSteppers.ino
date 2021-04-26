@@ -19,5 +19,13 @@ void loop(){
     if(rotate > -1000 && rotate < 1000){
         myStepper1.step(rotate);
     }
+    else if(rotate >-2000 && rotate < -1000){
+       rotate = rotate + 1000;
+        myStepper2.step(rotate);
+    }
+    else if(rotate > 1000 && rotate < 2000){
+        rotate = rotate - 1000;
+        myStepper2.step(rotate);
+    }
   }
 }
