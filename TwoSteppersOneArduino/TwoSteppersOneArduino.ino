@@ -16,16 +16,16 @@ void loop(){
   if(Serial.available() > 0){
     rotate = Serial.parseInt();
 
-    if(rotate>100 || rotate <-100){
-      if (rotate>100)
-        rotate -= 100;
-      else
-        rotate += 100;
-      myStepper2.step(rotate);
+    if (rotate < 1000 && rotate > -1000){
+      myStepper1.step(rotate);
       rotate = 0;
     }
-    else if (rotate<100 && rotate > -100){
-      myStepper1.step(rotate);
+    else if(rotate >= 1000 || rotate <= -1000){
+      if (rotate > 1000)
+        rotate -= 1000;
+      else
+        rotate += 1000;
+      myStepper2.step(rotate);
       rotate = 0;
     }
   }

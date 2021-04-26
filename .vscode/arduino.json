@@ -1,5 +1,9 @@
 {
     "board": "arduino:avr:uno",
     "sketch": "SystemTimeLedTest\\SystemTimeLedTest.ino",
+<<<<<<< HEAD
     "port": "COM3"
+=======
+    "port": "COM5"
+>>>>>>> eb928c05d52a85e094ab2124413f7fd4f2e572b1
 }
