@@ -13,14 +13,8 @@ void setup(){
 }
 
 void loop(){
-<<<<<<< HEAD
-    //currentSysTime = millis();
-    //ledFlash();
-    standby();
-=======
     currentSysTime = millis();
     ledFlash();
->>>>>>> eb928c05d52a85e094ab2124413f7fd4f2e572b1
 }
 
 void ledFlash(){
