@@ -10,21 +10,22 @@ Stepper myStepper2 = Stepper(stepsPerRevolution, 2, 4, 3, 5);
 void setup(){
   Serial.begin(9600);
   myStepper1.setSpeed(10);
+  myStepper2.setSpeed(10);
 }
 
 void loop(){
   if(Serial.available() > 0){
     rotate = Serial.parseInt();
 
-    if(rotate > -1000 && rotate < 1000){
+    if(rotate > -1000 && rotate < 10000){
         myStepper1.step(rotate);
     }
-    else if(rotate >-2000 && rotate < -1000){
-       rotate = rotate + 1000;
+    else if(rotate >-20000 && rotate < -10000){
+       rotate = rotate + 10000;
         myStepper2.step(rotate);
     }
-    else if(rotate > 1000 && rotate < 2000){
-        rotate = rotate - 1000;
+    else if(rotate > 10000 && rotate < 20000){
+        rotate = rotate - 10000;
         myStepper2.step(rotate);
     }
   }
